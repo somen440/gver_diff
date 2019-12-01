@@ -14,6 +14,7 @@ defmodule GverDiff.Mixfile do
       ],
       deps: deps,
       package: package,
+      test_coverage: [tool: ExCoveralls],
     ]
   end
 
@@ -22,7 +23,9 @@ defmodule GverDiff.Mixfile do
   end
 
   defp deps do
-    []
+    [
+      {:excoveralls, "~> 0.10", only: :test},
+    ]
   end
 
   defp package do

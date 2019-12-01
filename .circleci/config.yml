@@ -6,7 +6,7 @@ jobs:
   build:
     docker:
       # specify the version here
-      - image: circleci/elixir:1.4
+      - image: circleci/elixir:1.9.4
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -20,3 +20,7 @@ jobs:
       # specify any bash command here prefixed with `run: `
       - run: make build
       - run: make test
+      - run: make cover
+      - store_artifacts:
+          path: cover/excoveralls.html
+          destination: cover/excoveralls.html

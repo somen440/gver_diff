@@ -1,3 +1,6 @@
 _build/
 .idea/
 bin/gver_diff
+deps/
+cover/excoveralls.html
+cover/excoveralls.json
