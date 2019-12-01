@@ -10,4 +10,7 @@ test:
 cover:
 	MIX_ENV=test mix coveralls.circle
 
+cover_local:
+	MIX_ENV=test mix coveralls.html
+
 .PHONY: test, cover
