@@ -1,6 +1,6 @@
 name: Elixir CI
 
-on: push
+on: [push]
 
 jobs:
   build:
@@ -8,13 +8,11 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: elixir:1.9.1-slim
+      image: circleci/elixir:1.9.4
 
     steps:
     - uses: actions/checkout@v1
     - name: Install Dependencies
-      run: |
-        make build
+      run: make build
     - name: Run Tests
-      run: |
-        make test
+      run: make test
