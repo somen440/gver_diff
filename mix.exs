@@ -6,15 +6,15 @@ defmodule GverDiff.Mixfile do
       app: :gver_diff,
       version: "0.0.1",
       elixir: "~> 1.0",
-      build_embedded: Mix.env == :prod,
-      start_permanent: Mix.env == :prod,
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
       escript: [
         main_module: GverDiff.CLI,
-        name: "bin/gver_diff",
+        name: "bin/gver_diff"
       ],
       deps: deps,
       package: package,
-      test_coverage: [tool: ExCoveralls],
+      test_coverage: [tool: ExCoveralls]
     ]
   end
 
@@ -24,7 +24,7 @@ defmodule GverDiff.Mixfile do
 
   defp deps do
     [
-      {:excoveralls, "~> 0.10", only: :test},
+      {:excoveralls, "~> 0.10", only: :test}
     ]
   end
 

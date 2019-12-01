@@ -20,6 +20,7 @@ jobs:
       # specify any bash command here prefixed with `run: `
       - run: make build
       - run: make test
+      - run: make cs
       - run: make cover
       - store_artifacts:
           path: cover/excoveralls.html
