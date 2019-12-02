@@ -3,9 +3,9 @@ defmodule GverDiff.OptionConverter do
     {cast_base, _} = Integer.parse(base)
     {cast_target, _} = Integer.parse(target)
 
-    [
-      base: cast_base,
-      target: cast_target
-    ]
+    %{
+      :base => cast_base,
+      :target => cast_target
+    }
   end
 end

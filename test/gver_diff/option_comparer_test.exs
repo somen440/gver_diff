@@ -2,22 +2,17 @@ defmodule OptionComparerTest do
   use ExUnit.Case
 
   test "compare integer" do
-    values = [
-      #     default operator <
-      #     expect, base, target
-      [true, 3, 4],
-      [false, 4, 4],
-      [false, 5, 4]
-    ]
-
-    for [expect, base, target] <- values do
-      actual =
-        GverDiff.OptionComparer.compare?(
-          base: base,
-          target: target
-        )
-
-      assert expect == actual
-    end
+    Enum.each(
+      [
+        # default operator <
+        %{:expect => true, :base => 3, :target => 4},
+        %{:expect => false, :base => 4, :target => 4},
+        %{:expect => false, :base => 5, :target => 4}
+      ],
+      fn %{:expect => expect} = values ->
+        actual = values |> GverDiff.OptionComparer.compare?()
+        assert expect == actual
+      end
+    )
   end
 end

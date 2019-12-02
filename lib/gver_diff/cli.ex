@@ -4,7 +4,11 @@ defmodule GverDiff.CLI do
       args,
       strict: [
         base: :string,
-        target: :string
+        target: :string,
+        type: :string
+      ],
+      aliases: [
+        t: :type
       ]
     )
     |> GverDiff.OptionConverter.convert()
