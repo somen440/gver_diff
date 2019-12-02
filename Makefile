@@ -22,3 +22,7 @@ cover:
 
 cover_local:
 	MIX_ENV=test mix coveralls.html
+
+hook:
+	cp scripts/hooks/pre-push .git/hooks/pre-push
+.PHONY: hook
