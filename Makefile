@@ -12,6 +12,10 @@ cs:
 	mix format --check-formatted
 .PHONY: cs
 
+format:
+	mix format
+.PHOYNY: format
+
 cover:
 	MIX_ENV=test mix coveralls.circle
 .PHONY: cover

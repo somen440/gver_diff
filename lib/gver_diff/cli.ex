@@ -1,15 +1,13 @@
 defmodule GverDiff.CLI do
   def main(args) do
-    {options, _, _} =
-      OptionParser.parse(
-        args,
-        strict: [
-          base: :string,
-          target: :string
-        ]
-      )
-
-    GverDiff.OptionConverter.convert(options)
+    OptionParser.parse(
+      args,
+      strict: [
+        base: :string,
+        target: :string
+      ]
+    )
+    |> GverDiff.OptionConverter.convert()
     |> GverDiff.OptionComparer.compare?()
     |> if do
       IO.puts("OK !!")
