@@ -18,6 +18,24 @@ defmodule CLITest do
     assert expect == actual
   end
 
+  test "Specified Operator" do
+    expect = "OK !!\n"
+
+    actual =
+      capture_io(fn ->
+        GverDiff.CLI.main([
+          "--base",
+          "3",
+          "--target",
+          "2",
+          "-o",
+          ">"
+        ])
+      end)
+
+    assert expect == actual
+  end
+
   test "Abnormal" do
     expect = 1
 
@@ -27,6 +45,23 @@ defmodule CLITest do
         "3",
         "--target",
         "2"
+      ])
+      |> catch_exit
+
+    assert expect == actual
+  end
+
+  test "Abnormal Operator" do
+    expect = 1
+
+    {_, actual} =
+      GverDiff.CLI.main([
+        "--base",
+        "3",
+        "--target",
+        "2",
+        "-o",
+        "hoge"
       ])
       |> catch_exit
 

@@ -8,13 +8,9 @@ defmodule OptionConverterTest do
     }
 
     actual =
-      GverDiff.OptionConverter.convert({
-        [
-          base: "2",
-          target: "3"
-        ],
-        1,
-        2
+      GverDiff.OptionConverter.convert(%{
+        :base => "2",
+        :target => "3"
       })
 
     assert expect == actual
