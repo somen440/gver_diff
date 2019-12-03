@@ -5,7 +5,7 @@ build:
 	mix escript.build
 
 test:
-	mix test
+	mix test --color --trace
 .PHONY: test
 
 cs:

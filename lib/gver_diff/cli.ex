@@ -1,18 +1,24 @@
 defmodule GverDiff.CLI do
   def main(args) do
-    OptionParser.parse(
-      args,
-      strict: [
-        base: :string,
-        target: :string,
-        type: :string
-      ],
-      aliases: [
-        t: :type
-      ]
-    )
+    {options, _, _} =
+      OptionParser.parse(
+        args,
+        strict: [
+          base: :string,
+          target: :string,
+          type: :string,
+          operator: :string
+        ],
+        aliases: [
+          t: :type,
+          o: :operator
+        ]
+      )
+
+    options
+    |> Enum.into(%{})
     |> GverDiff.OptionConverter.convert()
-    |> GverDiff.OptionComparer.compare?()
+    |> GverDiff.OptionComparer.compare?(options[:operator])
     |> if do
       IO.puts("OK !!")
     else
