@@ -17,7 +17,7 @@ defmodule GverDiff.CLI do
 
     options
     |> Enum.into(%{})
-    |> GverDiff.OptionConverter.convert()
+    |> GverDiff.OptionConverter.convert(options[:type])
     |> GverDiff.OptionComparer.compare?(options[:operator])
     |> if do
       IO.puts("OK !!")
