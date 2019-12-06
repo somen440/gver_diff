@@ -3,14 +3,13 @@ defmodule CLITest do
   import ExUnit.CaptureIO
 
   test "Normal" do
-    expect = "OK !!\n"
+    expect = "true\n"
 
     actual =
       capture_io(fn ->
         GverDiff.CLI.main([
-          "--base",
           "2",
-          "--target",
+          "<",
           "3"
         ])
       end)
@@ -18,18 +17,17 @@ defmodule CLITest do
     assert expect == actual
   end
 
-  test "Specified Operator" do
-    expect = "OK !!\n"
+  test "Specified Type" do
+    expect = "true\n"
 
     actual =
       capture_io(fn ->
         GverDiff.CLI.main([
-          "--base",
-          "3",
-          "--target",
-          "2",
-          "-o",
-          ">"
+          "--type",
+          "datetime",
+          "2019-11-11 12:12:12",
+          "<",
+          "2019-12-12 13:13:13"
         ])
       end)
 
@@ -37,33 +35,31 @@ defmodule CLITest do
   end
 
   test "Abnormal" do
-    expect = 1
+    expect = "false\n"
 
-    {_, actual} =
-      GverDiff.CLI.main([
-        "--base",
-        "3",
-        "--target",
-        "2"
-      ])
-      |> catch_exit
+    actual =
+      capture_io(fn ->
+        GverDiff.CLI.main([
+          "3",
+          "<",
+          "2"
+        ])
+      end)
 
     assert expect == actual
   end
 
   test "Abnormal Operator" do
-    expect = 1
+    expect = "false\n"
 
-    {_, actual} =
-      GverDiff.CLI.main([
-        "--base",
-        "3",
-        "--target",
-        "2",
-        "-o",
-        "hoge"
-      ])
-      |> catch_exit
+    actual =
+      capture_io(fn ->
+        GverDiff.CLI.main([
+          "3",
+          "hoge",
+          "2"
+        ])
+      end)
 
     assert expect == actual
   end
