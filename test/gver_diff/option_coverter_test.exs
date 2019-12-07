@@ -51,6 +51,12 @@ defmodule OptionConverterTest do
       {:date, %{:base => ~D[2019-12-21], :target => ~D[2018-10-21]}},
       %{:base => "2019-12-21", :target => "2018-10-21"},
       "date"
+    ],
+    [
+      :step6,
+      {:version, %{:base => "1.2.1", :target => "1.2.2"}},
+      %{:base => "1.2.1", :target => "1.2.2"},
+      "version"
     ]
   ]
 
@@ -101,6 +107,12 @@ defmodule OptionConverterTest do
       "not date",
       %{:base => "a", :target => "b"},
       "date"
+    ],
+    [
+      :step5,
+      "not version",
+      %{:base => "1.2", :target => "1.3"},
+      "version"
     ]
   ]
 

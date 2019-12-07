@@ -43,6 +43,13 @@ defmodule GverDiff.OptionConverter do
            :target => convert_date(target)
          }}
 
+      type == "version" ->
+        {:version,
+         %{
+           :base => convert_version(base),
+           :target => convert_version(target)
+         }}
+
       true ->
         raise "Error!! undefined type."
     end
@@ -73,6 +80,14 @@ defmodule GverDiff.OptionConverter do
     case Date.from_iso8601(x) do
       {:ok, date} -> date
       {:error, _} -> raise "not date"
+    end
+  end
+
+  defp convert_version(x) do
+    if Regex.match?(~r/\d+\.\d+\.\d+/, x) do
+      x
+    else
+      raise "not version"
     end
   end
 end

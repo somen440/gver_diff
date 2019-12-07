@@ -117,4 +117,32 @@ defmodule OptionComparerTest do
       assert @expect == actual
     end
   end
+
+  compareVersion = [
+    [:step1, true, {:version, %{:base => "1.2.3", :target => "1.2.3"}}, "eq"],
+    [:step2, false, {:version, %{:base => "1.2.3", :target => "1.2.4"}}, "eq"],
+    [:step3, true, {:version, %{:base => "1.2.3", :target => "1.2.4"}}, "ne"],
+    [:step4, false, {:version, %{:base => "1.2.4", :target => "1.2.4"}}, "ne"],
+    [:step5, true, {:version, %{:base => "1.2.15", :target => "1.2.4"}}, "gt"],
+    [:step6, false, {:version, %{:base => "1.2.15", :target => "1.3.4"}}, "gt"],
+    [:step7, true, {:version, %{:base => "1.1.15", :target => "1.2.4"}}, "lt"],
+    [:step8, false, {:version, %{:base => "2.3.15", :target => "1.3.4"}}, "lt"],
+    [:step9, true, {:version, %{:base => "1.2.4", :target => "1.2.4"}}, "ge"],
+    [:step10, true, {:version, %{:base => "2.3.15", :target => "1.3.4"}}, "ge"],
+    [:step11, false, {:version, %{:base => "0.3.15", :target => "1.3.4"}}, "ge"],
+    [:step12, true, {:version, %{:base => "1.2.4", :target => "1.2.4"}}, "le"],
+    [:step13, true, {:version, %{:base => "0.3.15", :target => "1.3.4"}}, "le"],
+    [:step14, false, {:version, %{:base => "2.3.15", :target => "1.3.4"}}, "le"]
+  ]
+
+  for [label, expect, values, operator] <- compareVersion do
+    @label label
+    @expect expect
+    @values values
+    @operator operator
+    test "compare version: #{@label}" do
+      actual = @values |> GverDiff.OptionComparer.compare?(@operator)
+      assert @expect === actual
+    end
+  end
 end

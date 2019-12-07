@@ -16,7 +16,6 @@ defmodule GverDiff.OptionComparer do
           {:lessThan} -> base < target
           {:greaterThanOrEqual} -> base >= target
           {:lessThanOrEqual} -> base <= target
-          {:error} -> raise "Error!! undefined operator."
         end
 
       true ->
@@ -30,6 +29,17 @@ defmodule GverDiff.OptionComparer do
   def compare?({:datetime, values}, operator), do: values |> compare?(operator)
   def compare?({:date, values}, operator), do: values |> compare?(operator)
 
+  def compare?({:version, %{:base => base, :target => target}}, operator) do
+    case check_operator(operator) do
+      {:equal} -> base === target
+      {:notEqual} -> base !== target
+      {:greaterThan} -> Version.match?(base, "> " <> target)
+      {:lessThan} -> Version.match?(base, "< " <> target)
+      {:greaterThanOrEqual} -> Version.match?(base, ">= " <> target)
+      {:lessThanOrEqual} -> Version.match?(base, "<=" <> target)
+    end
+  end
+
   defp check_operator(operator) do
     cond do
       operator == "==" or operator == "eq" -> {:equal}
@@ -38,7 +48,7 @@ defmodule GverDiff.OptionComparer do
       operator == "<" or operator == "lt" -> {:lessThan}
       operator == ">=" or operator == "ge" -> {:greaterThanOrEqual}
       operator == "<=" or operator == "le" -> {:lessThanOrEqual}
-      true -> {:error}
+      true -> raise "Error!! undefined operator."
     end
   end
 
