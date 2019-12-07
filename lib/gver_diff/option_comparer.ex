@@ -24,6 +24,12 @@ defmodule GverDiff.OptionComparer do
     end
   end
 
+  def compare?({:string, values}, operator), do: values |> compare?(operator)
+  def compare?({:integer, values}, operator), do: values |> compare?(operator)
+  def compare?({:float, values}, operator), do: values |> compare?(operator)
+  def compare?({:datetime, values}, operator), do: values |> compare?(operator)
+  def compare?({:date, values}, operator), do: values |> compare?(operator)
+
   defp check_operator(operator) do
     cond do
       operator == "==" or operator == "eq" -> {:equal}
@@ -55,7 +61,7 @@ defmodule GverDiff.OptionComparer do
       is_map(x) ->
         Map.has_key?(x, :__struct__)
         |> if do
-          x.__struct__ === NaiveDateTime
+          x.__struct__ === NaiveDateTime or x.__struct__ === Date
         end
 
       true ->

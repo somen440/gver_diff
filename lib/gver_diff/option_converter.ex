@@ -9,28 +9,39 @@ defmodule GverDiff.OptionConverter do
   def convert(%{:base => base, :target => target} = values, type) do
     cond do
       type === "string" ->
-        %{
-          :base => base,
-          :target => target
-        }
+        {:string,
+         %{
+           :base => base,
+           :target => target
+         }}
 
       type === "integer" ->
-        %{
-          :base => convert_integer(base),
-          :target => convert_integer(target)
-        }
+        {:integer,
+         %{
+           :base => convert_integer(base),
+           :target => convert_integer(target)
+         }}
 
       type === "float" ->
-        %{
-          :base => convert_float(base),
-          :target => convert_float(target)
-        }
+        {:float,
+         %{
+           :base => convert_float(base),
+           :target => convert_float(target)
+         }}
 
       type === "datetime" ->
-        %{
-          :base => convert_datetime(base),
-          :target => convert_datetime(target)
-        }
+        {:datetime,
+         %{
+           :base => convert_datetime(base),
+           :target => convert_datetime(target)
+         }}
+
+      type == "date" ->
+        {:date,
+         %{
+           :base => convert_date(base),
+           :target => convert_date(target)
+         }}
 
       true ->
         raise "Error!! undefined type."
@@ -55,6 +66,13 @@ defmodule GverDiff.OptionConverter do
     case NaiveDateTime.from_iso8601(x) do
       {:ok, datetime} -> datetime
       {:error, _} -> raise "not datetime"
+    end
+  end
+
+  defp convert_date(x) do
+    case Date.from_iso8601(x) do
+      {:ok, date} -> date
+      {:error, _} -> raise "not date"
     end
   end
 end

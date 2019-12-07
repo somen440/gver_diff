@@ -15,7 +15,7 @@ defmodule OptionComparerTest do
     [:step7, %{:expect => true, :base => 3.1, :target => 3.11}],
     [:step8, %{:expect => false, :base => 4.123, :target => 4.123}],
     [:step9, %{:expect => false, :base => 5.234, :target => 4.222}],
-    # date
+    # datetime
     [
       :step10,
       %{:expect => true, :base => ~N[2019-11-11 11:11:11], :target => ~N[2019-11-11 22:22:22]}
@@ -30,7 +30,20 @@ defmodule OptionComparerTest do
     ],
     # different type
     [:step13, %{:expect => false, :base => 3, :target => "4"}],
-    [:step14, %{:expect => false, :base => 3, :target => 3.11}]
+    [:step14, %{:expect => false, :base => 3, :target => 3.11}],
+    # date
+    [
+      :step15,
+      %{:expect => true, :base => ~D[2019-11-11], :target => ~D[2019-11-12]}
+    ],
+    [
+      :step16,
+      %{:expect => false, :base => ~D[2019-11-11], :target => ~D[2019-11-11]}
+    ],
+    [
+      :step17,
+      %{:expect => false, :base => ~D[2019-11-11], :target => ~D[2019-11-09]}
+    ]
   ]
 
   for [label, %{:expect => expect} = values] <- compareIntegerValues do
