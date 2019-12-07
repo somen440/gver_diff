@@ -24,27 +24,39 @@ defmodule OptionConverterTest do
   convertSpecifiedTypeValues = [
     [
       :step1,
-      %{:base => 2, :target => 3},
+      {:integer, %{:base => 2, :target => 3}},
       %{:base => "2", :target => "3"},
       "integer"
     ],
     [
       :step2,
-      %{:base => 2.1, :target => 3.22},
+      {:float, %{:base => 2.1, :target => 3.22}},
       %{:base => "2.1", :target => "3.22"},
       "float"
     ],
     [
       :step3,
-      %{:base => ~N[2019-11-11 11:11:11], :target => ~N[2019-12-12 22:22:22]},
+      {:datetime, %{:base => ~N[2019-11-11 11:11:11], :target => ~N[2019-12-12 22:22:22]}},
       %{:base => "2019-11-11 11:11:11", :target => "2019-12-12 22:22:22"},
       "datetime"
     ],
     [
       :step4,
-      %{:base => "Apple", :target => "Banana"},
+      {:string, %{:base => "Apple", :target => "Banana"}},
       %{:base => "Apple", :target => "Banana"},
       "string"
+    ],
+    [
+      :step5,
+      {:date, %{:base => ~D[2019-12-21], :target => ~D[2018-10-21]}},
+      %{:base => "2019-12-21", :target => "2018-10-21"},
+      "date"
+    ],
+    [
+      :step6,
+      {:version, %{:base => "1.2.1", :target => "1.2.2"}},
+      %{:base => "1.2.1", :target => "1.2.2"},
+      "version"
     ]
   ]
 
@@ -89,6 +101,18 @@ defmodule OptionConverterTest do
       "not datetime",
       %{:base => "a", :target => "b"},
       "datetime"
+    ],
+    [
+      :step4,
+      "not date",
+      %{:base => "a", :target => "b"},
+      "date"
+    ],
+    [
+      :step5,
+      "not version",
+      %{:base => "1.2", :target => "1.3"},
+      "version"
     ]
   ]
 

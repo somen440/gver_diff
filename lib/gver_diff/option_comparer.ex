@@ -16,11 +16,27 @@ defmodule GverDiff.OptionComparer do
           {:lessThan} -> base < target
           {:greaterThanOrEqual} -> base >= target
           {:lessThanOrEqual} -> base <= target
-          {:error} -> raise "Error!! undefined operator."
         end
 
       true ->
         false
+    end
+  end
+
+  def compare?({:string, values}, operator), do: values |> compare?(operator)
+  def compare?({:integer, values}, operator), do: values |> compare?(operator)
+  def compare?({:float, values}, operator), do: values |> compare?(operator)
+  def compare?({:datetime, values}, operator), do: values |> compare?(operator)
+  def compare?({:date, values}, operator), do: values |> compare?(operator)
+
+  def compare?({:version, %{:base => base, :target => target}}, operator) do
+    case check_operator(operator) do
+      {:equal} -> base === target
+      {:notEqual} -> base !== target
+      {:greaterThan} -> Version.match?(base, "> " <> target)
+      {:lessThan} -> Version.match?(base, "< " <> target)
+      {:greaterThanOrEqual} -> Version.match?(base, ">= " <> target)
+      {:lessThanOrEqual} -> Version.match?(base, "<=" <> target)
     end
   end
 
@@ -32,7 +48,7 @@ defmodule GverDiff.OptionComparer do
       operator == "<" or operator == "lt" -> {:lessThan}
       operator == ">=" or operator == "ge" -> {:greaterThanOrEqual}
       operator == "<=" or operator == "le" -> {:lessThanOrEqual}
-      true -> {:error}
+      true -> raise "Error!! undefined operator."
     end
   end
 
@@ -55,7 +71,7 @@ defmodule GverDiff.OptionComparer do
       is_map(x) ->
         Map.has_key?(x, :__struct__)
         |> if do
-          x.__struct__ === NaiveDateTime
+          x.__struct__ === NaiveDateTime or x.__struct__ === Date
         end
 
       true ->
