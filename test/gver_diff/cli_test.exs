@@ -50,17 +50,32 @@ defmodule CLITest do
   end
 
   test "Abnormal Operator" do
-    expect = "false\n"
-
-    actual =
-      capture_io(fn ->
+    assert_raise(
+      RuntimeError,
+      "Error!! undefined operator.",
+      fn ->
         GverDiff.CLI.main([
           "3",
           "hoge",
           "2"
         ])
-      end)
+      end
+    )
+  end
 
-    assert expect == actual
+  test "Abnormal Type" do
+    assert_raise(
+      RuntimeError,
+      "Error!! undefined type.",
+      fn ->
+        GverDiff.CLI.main([
+          "--type",
+          "hoge",
+          "3",
+          "<",
+          "2"
+        ])
+      end
+    )
   end
 end

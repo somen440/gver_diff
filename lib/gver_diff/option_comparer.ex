@@ -16,7 +16,7 @@ defmodule GverDiff.OptionComparer do
           {:lessThan} -> base < target
           {:greaterThanOrEqual} -> base >= target
           {:lessThanOrEqual} -> base <= target
-          {:error} -> false
+          {:error} -> raise "Error!! undefined operator."
         end
 
       true ->
