@@ -15,13 +15,13 @@ defmodule OptionConverterTest do
           :base => "2",
           :target => "3"
         },
-        nil
+        []
       )
 
     assert expect == actual
   end
 
-  convertSpecifiedTypeValues = [
+  convert_specified_type_values = [
     [
       :step1,
       {:integer, %{:base => 2, :target => 3}},
@@ -60,13 +60,13 @@ defmodule OptionConverterTest do
     ]
   ]
 
-  for [label, expect, values, specifiedType] <- convertSpecifiedTypeValues do
+  for [label, expect, values, specified_type] <- convert_specified_type_values do
     @label label
     @expect expect
     @values values
-    @specifiedType specifiedType
+    @specified_type specified_type
     test "convert specified type: #{@label}" do
-      actual = GverDiff.OptionConverter.convert(@values, @specifiedType)
+      actual = GverDiff.OptionConverter.convert(@values, type: @specified_type)
       assert @expect === actual
     end
   end
@@ -78,12 +78,12 @@ defmodule OptionConverterTest do
           :base => "a",
           :target => "b"
         },
-        nil
+        []
       )
     end)
   end
 
-  convertSpecifiedTypeWithRaiseValues = [
+  convert_specified_type_with_raise_values = [
     [
       :step1,
       "not integer",
@@ -116,18 +116,56 @@ defmodule OptionConverterTest do
     ]
   ]
 
-  for [label, message, values, specifiedType] <- convertSpecifiedTypeWithRaiseValues do
+  for [label, message, values, specified_type] <- convert_specified_type_with_raise_values do
     @label label
     @message message
     @values values
-    @specifiedType specifiedType
+    @specified_type specified_type
     test "covert specified type witch raise: #{label}" do
       assert_raise(RuntimeError, @message, fn ->
         GverDiff.OptionConverter.convert(
           @values,
-          @specifiedType
+          type: @specified_type
         )
       end)
     end
+  end
+
+  convert_specified_type_with_raise_values = [
+    [
+      :step1,
+      {:date, %{:base => ~D[2011-10-11], :target => ~D[2011-12-12]}},
+      %{:base => "dev-20111011", :target => "dev-20111212"},
+      "date",
+      "dev-(?<version>.*)"
+    ]
+  ]
+
+  for [label, expect, values, specified_type, regex] <- convert_specified_type_with_raise_values do
+    @label label
+    @expect expect
+    @values values
+    @specified_type specified_type
+    @regex regex
+    test "covert specified regex: #{label}" do
+      actual =
+        GverDiff.OptionConverter.convert(
+          @values,
+          type: @specified_type,
+          regex: @regex
+        )
+
+      assert @expect == actual
+    end
+  end
+
+  test "convert specified regex with raise" do
+    assert_raise(RuntimeError, "Error!! failed extract regex.", fn ->
+      GverDiff.OptionConverter.convert(
+        %{:base => "11", :target => "22"},
+        type: "date",
+        regex: "dev-(?<version>.*"
+      )
+    end)
   end
 end

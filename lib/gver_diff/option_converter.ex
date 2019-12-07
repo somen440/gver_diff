@@ -1,12 +1,15 @@
 defmodule GverDiff.OptionConverter do
-  def convert(%{:base => base, :target => target}, nil) do
+  def convert(%{:base => base, :target => target}, []) do
     %{
       :base => convert_integer(base),
       :target => convert_integer(target)
     }
   end
 
-  def convert(%{:base => base, :target => target} = values, type) do
+  def convert(
+        %{:base => base, :target => target} = values,
+        [{:type, type}]
+      ) do
     cond do
       type === "string" ->
         {:string,
@@ -55,6 +58,29 @@ defmodule GverDiff.OptionConverter do
     end
   end
 
+  def convert(
+        %{:base => base, :target => target},
+        [{:type, type}, {:regex, regex}]
+      ) do
+    extract_version = fn x ->
+      regex
+      |> Regex.compile()
+      |> case do
+        {:ok, r} ->
+          r |> Regex.named_captures(x)
+
+        {:error, _} ->
+          raise "Error!! failed extract regex."
+      end
+      |> Map.fetch!("version")
+    end
+
+    convert(
+      %{:base => extract_version.(base), :target => extract_version.(target)},
+      type: type
+    )
+  end
+
   defp convert_integer(x) do
     case Integer.parse(x) do
       {x, _} -> x
@@ -77,9 +103,26 @@ defmodule GverDiff.OptionConverter do
   end
 
   defp convert_date(x) do
-    case Date.from_iso8601(x) do
-      {:ok, date} -> date
-      {:error, _} -> raise "not date"
+    # 20191011 -> 2019-10-11
+    convert = fn from ->
+      case Date.from_iso8601(from) do
+        {:ok, date} -> date
+        {:error, _} -> raise "not date"
+      end
+    end
+
+    if Regex.match?(~r/20[0-9]{6}/, x) do
+      capture =
+        Regex.named_captures(
+          ~r/(?<year>[0-9]{4})(?<date>[0-9]{2})(?<day>[0-9]{2})/,
+          x
+        )
+
+      [capture["year"], capture["date"], capture["day"]]
+      |> Enum.join("-")
+      |> convert.()
+    else
+      convert.(x)
     end
   end
 
