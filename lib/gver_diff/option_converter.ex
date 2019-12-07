@@ -8,6 +8,12 @@ defmodule GverDiff.OptionConverter do
 
   def convert(%{:base => base, :target => target} = values, type) do
     cond do
+      type === "string" ->
+        %{
+          :base => base,
+          :target => target
+        }
+
       type === "integer" ->
         %{
           :base => convert_integer(base),
@@ -27,7 +33,7 @@ defmodule GverDiff.OptionConverter do
         }
 
       true ->
-        values
+        raise "Error!! undefined type."
     end
   end
 
