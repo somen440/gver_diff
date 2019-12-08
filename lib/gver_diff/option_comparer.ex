@@ -1,13 +1,13 @@
 defmodule GverDiff.OptionComparer do
-#  @spec compare?(Types.Compares.t(), nil) :: boolean
-  def compare?(%{:base => base, :target => target}, nil) do
+  @spec compare?(Compares.t() | TypeAndCompares.t(), any) :: boolean
+  def compare?(%Compares{:base => base, :target => target}, nil) do
     cond do
       get_type(base) === get_type(target) -> base < target
       true -> false
     end
   end
 
-  def compare?(%{:base => base, :target => target}, operator) do
+  def compare?(%Compares{:base => base, :target => target}, operator) do
     cond do
       get_type(base) === get_type(target) ->
         case check_operator(operator) do
@@ -24,13 +24,28 @@ defmodule GverDiff.OptionComparer do
     end
   end
 
-  def compare?({:string, values}, operator), do: values |> compare?(operator)
-  def compare?({:integer, values}, operator), do: values |> compare?(operator)
-  def compare?({:float, values}, operator), do: values |> compare?(operator)
-  def compare?({:datetime, values}, operator), do: values |> compare?(operator)
-  def compare?({:date, values}, operator), do: values |> compare?(operator)
+  def compare?(%TypeAndCompares{:id => :string, :compares => values}, operator),
+    do: values |> compare?(operator)
 
-  def compare?({:version, %{:base => base, :target => target}}, operator) do
+  def compare?(%TypeAndCompares{:id => :integer, :compares => values}, operator),
+    do: values |> compare?(operator)
+
+  def compare?(%TypeAndCompares{:id => :float, :compares => values}, operator),
+    do: values |> compare?(operator)
+
+  def compare?(%TypeAndCompares{:id => :datetime, :compares => values}, operator),
+    do: values |> compare?(operator)
+
+  def compare?(%TypeAndCompares{:id => :date, :compares => values}, operator),
+    do: values |> compare?(operator)
+
+  def compare?(
+        %TypeAndCompares{
+          :id => :version,
+          :compares => %Compares{:base => base, :target => target}
+        },
+        operator
+      ) do
     case check_operator(operator) do
       {:equal} -> base === target
       {:notEqual} -> base !== target

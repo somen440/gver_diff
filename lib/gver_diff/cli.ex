@@ -15,7 +15,7 @@ defmodule GverDiff.CLI do
 
     [base, operator, target] = arg
 
-    %{:base => base, :target => target}
+    %Compares{:base => base, :target => target}
     |> GverDiff.OptionConverter.convert(options)
     |> GverDiff.OptionComparer.compare?(operator)
     |> IO.puts()

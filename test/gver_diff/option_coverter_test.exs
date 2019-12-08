@@ -4,58 +4,73 @@ defmodule OptionConverterTest do
   import ExUnit.Assertions
 
   test "convert string to integer" do
-    expect = %{
+    expect = %Compares{
       :base => 2,
       :target => 3
     }
 
     actual =
       GverDiff.OptionConverter.convert(
-        %{
+        %Compares{
           :base => "2",
           :target => "3"
         },
         []
       )
 
-    assert expect == actual
+    assert expect === actual
   end
 
   convert_specified_type_values = [
     [
       :step1,
-      {:integer, %{:base => 2, :target => 3}},
-      %{:base => "2", :target => "3"},
+      %TypeAndCompares{:id => :integer, :compares => %Compares{:base => 2, :target => 3}},
+      %Compares{:base => "2", :target => "3"},
       "integer"
     ],
     [
       :step2,
-      {:float, %{:base => 2.1, :target => 3.22}},
-      %{:base => "2.1", :target => "3.22"},
+      %TypeAndCompares{:id => :float, :compares => %Compares{:base => 2.1, :target => 3.22}},
+      %Compares{:base => "2.1", :target => "3.22"},
       "float"
     ],
     [
       :step3,
-      {:datetime, %{:base => ~N[2019-11-11 11:11:11], :target => ~N[2019-12-12 22:22:22]}},
-      %{:base => "2019-11-11 11:11:11", :target => "2019-12-12 22:22:22"},
+      %TypeAndCompares{
+        :id => :datetime,
+        :compares => %Compares{
+          :base => ~N[2019-11-11 11:11:11],
+          :target => ~N[2019-12-12 22:22:22]
+        }
+      },
+      %Compares{:base => "2019-11-11 11:11:11", :target => "2019-12-12 22:22:22"},
       "datetime"
     ],
     [
       :step4,
-      {:string, %{:base => "Apple", :target => "Banana"}},
-      %{:base => "Apple", :target => "Banana"},
+      %TypeAndCompares{
+        :id => :string,
+        :compares => %Compares{:base => "Apple", :target => "Banana"}
+      },
+      %Compares{:base => "Apple", :target => "Banana"},
       "string"
     ],
     [
       :step5,
-      {:date, %{:base => ~D[2019-12-21], :target => ~D[2018-10-21]}},
-      %{:base => "2019-12-21", :target => "2018-10-21"},
+      %TypeAndCompares{
+        :id => :date,
+        :compares => %Compares{:base => ~D[2019-12-21], :target => ~D[2018-10-21]}
+      },
+      %Compares{:base => "2019-12-21", :target => "2018-10-21"},
       "date"
     ],
     [
       :step6,
-      {:version, %{:base => "1.2.1", :target => "1.2.2"}},
-      %{:base => "1.2.1", :target => "1.2.2"},
+      %TypeAndCompares{
+        :id => :version,
+        :compares => %Compares{:base => "1.2.1", :target => "1.2.2"}
+      },
+      %Compares{:base => "1.2.1", :target => "1.2.2"},
       "version"
     ]
   ]
@@ -87,31 +102,31 @@ defmodule OptionConverterTest do
     [
       :step1,
       "not integer",
-      %{:base => "a", :target => "b"},
+      %Compares{:base => "a", :target => "b"},
       "integer"
     ],
     [
       :step2,
       "not float",
-      %{:base => "a", :target => "b"},
+      %Compares{:base => "a", :target => "b"},
       "float"
     ],
     [
       :step3,
       "not datetime",
-      %{:base => "a", :target => "b"},
+      %Compares{:base => "a", :target => "b"},
       "datetime"
     ],
     [
       :step4,
       "not date",
-      %{:base => "a", :target => "b"},
+      %Compares{:base => "a", :target => "b"},
       "date"
     ],
     [
       :step5,
       "not version",
-      %{:base => "1.2", :target => "1.3"},
+      %Compares{:base => "1.2", :target => "1.3"},
       "version"
     ]
   ]
@@ -134,8 +149,11 @@ defmodule OptionConverterTest do
   convert_specified_type_with_raise_values = [
     [
       :step1,
-      {:date, %{:base => ~D[2011-10-11], :target => ~D[2011-12-12]}},
-      %{:base => "dev-20111011", :target => "dev-20111212"},
+      %TypeAndCompares{
+        :id => :date,
+        :compares => %Compares{:base => ~D[2011-10-11], :target => ~D[2011-12-12]}
+      },
+      %Compares{:base => "dev-20111011", :target => "dev-20111212"},
       "date",
       "dev-(?<version>.*)"
     ]
@@ -155,14 +173,14 @@ defmodule OptionConverterTest do
           regex: @regex
         )
 
-      assert @expect == actual
+      assert @expect === actual
     end
   end
 
   test "convert specified regex with raise" do
     assert_raise(RuntimeError, "Error!! failed extract regex.", fn ->
       GverDiff.OptionConverter.convert(
-        %{:base => "11", :target => "22"},
+        %Compares{:base => "11", :target => "22"},
         type: "date",
         regex: "dev-(?<version>.*"
       )

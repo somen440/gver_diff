@@ -1,6 +1,7 @@
 defmodule GverDiff.OptionConverter do
+  @spec convert(Compares.t(), any) :: Compares.t() | TypeAndCompares.t()
   def convert(%{:base => base, :target => target}, []) do
-    %{
+    %Compares{
       :base => convert_integer(base),
       :target => convert_integer(target)
     }
@@ -12,46 +13,55 @@ defmodule GverDiff.OptionConverter do
       ) do
     cond do
       type === "string" ->
-        {:string,
-         %{
-           :base => base,
-           :target => target
-         }}
+        %TypeAndCompares{
+          :id => :string,
+          :compares => %Compares{:base => base, :target => target}
+        }
 
       type === "integer" ->
-        {:integer,
-         %{
-           :base => convert_integer(base),
-           :target => convert_integer(target)
-         }}
+        %TypeAndCompares{
+          :id => :integer,
+          :compares => %Compares{
+            :base => convert_integer(base),
+            :target => convert_integer(target)
+          }
+        }
 
       type === "float" ->
-        {:float,
-         %{
-           :base => convert_float(base),
-           :target => convert_float(target)
-         }}
+        %TypeAndCompares{
+          :id => :float,
+          :compares => %Compares{
+            :base => convert_float(base),
+            :target => convert_float(target)
+          }
+        }
 
       type === "datetime" ->
-        {:datetime,
-         %{
-           :base => convert_datetime(base),
-           :target => convert_datetime(target)
-         }}
+        %TypeAndCompares{
+          :id => :datetime,
+          :compares => %Compares{
+            :base => convert_datetime(base),
+            :target => convert_datetime(target)
+          }
+        }
 
       type == "date" ->
-        {:date,
-         %{
-           :base => convert_date(base),
-           :target => convert_date(target)
-         }}
+        %TypeAndCompares{
+          :id => :date,
+          :compares => %Compares{
+            :base => convert_date(base),
+            :target => convert_date(target)
+          }
+        }
 
       type == "version" ->
-        {:version,
-         %{
-           :base => convert_version(base),
-           :target => convert_version(target)
-         }}
+        %TypeAndCompares{
+          :id => :version,
+          :compares => %Compares{
+            :base => convert_version(base),
+            :target => convert_version(target)
+          }
+        }
 
       true ->
         raise "Error!! undefined type."
@@ -76,7 +86,10 @@ defmodule GverDiff.OptionConverter do
     end
 
     convert(
-      %{:base => extract_version.(base), :target => extract_version.(target)},
+      %Compares{
+        :base => extract_version.(base),
+        :target => extract_version.(target)
+      },
       type: type
     )
   end
