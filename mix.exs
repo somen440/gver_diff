@@ -4,13 +4,13 @@ defmodule GverDiff.Mixfile do
   def project do
     [
       app: :gver_diff,
-      version: "0.0.1",
+      version: "0.0.2",
       elixir: "~> 1.0",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       escript: [
         main_module: GverDiff.CLI,
-        name: "bin/gver_diff"
+        name: "gver_diff"
       ],
       deps: deps,
       package: package,
