@@ -7,7 +7,7 @@ defmodule GverDiffType do
 
   @type t :: %GverDiffType{name: name_atom}
 
-  @spec new(string) :: GverDiffType
+  @spec new(binary) :: GverDiffType.t()
   def new(name) do
     %GverDiffType{:name => String.to_atom(name)}
   end

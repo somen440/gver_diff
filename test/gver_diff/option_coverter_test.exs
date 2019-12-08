@@ -81,10 +81,12 @@ defmodule OptionConverterTest do
     @values values
     @specified_type specified_type
     test "convert specified type: #{@label}" do
-      actual = GverDiff.OptionConverter.convert(
-        @values,
-        [GverDiffType.new(@specified_type)]
-      )
+      actual =
+        GverDiff.OptionConverter.convert(
+          @values,
+          [GverDiffType.new(@specified_type)]
+        )
+
       assert @expect === actual
     end
   end

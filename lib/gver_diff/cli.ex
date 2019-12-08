@@ -15,7 +15,8 @@ defmodule GverDiff.CLI do
 
     [base, operator, target] = arg
 
-    option = options
+    option =
+      options
       |> Enum.map(fn {k, v} ->
         if k == :type do
           GverDiffType.new(v)
