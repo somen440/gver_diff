@@ -4,6 +4,9 @@ build:
 	mix deps.get
 	mix escript.build
 
+dialyzer_plt:
+	MIX_ENV=test mix dialyzer --plt
+
 test:
 	mix test --color --trace
 .PHONY: test
@@ -24,7 +27,6 @@ cover_local:
 	MIX_ENV=test mix coveralls.html
 
 dialyzer:
-	MIX_ENV=test mix dialyzer --plt
 	MIX_ENV=test mix dialyzer
 .PHONY: dialyzer
 
