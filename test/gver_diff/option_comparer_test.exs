@@ -1,7 +1,7 @@
 defmodule OptionComparerTest do
   use ExUnit.Case, async: true
 
-  compareIntegerValues = [
+  compare_integer_values = [
     # default operator <
     # integer
     [:step1, %{:expect => true, :base => 3, :target => 4}],
@@ -46,7 +46,7 @@ defmodule OptionComparerTest do
     ]
   ]
 
-  for [label, %{:expect => expect} = values] <- compareIntegerValues do
+  for [label, %{:expect => expect} = values] <- compare_integer_values do
     @label label
     @expect expect
     @values values
@@ -56,7 +56,7 @@ defmodule OptionComparerTest do
     end
   end
 
-  compareSpecifiedOperatorValues = [
+  compare_specified_operator_values = [
     # equals
     [:step1, %{:expect => true, :base => 4, :target => 4, :operator => "=="}],
     [:step2, %{:expect => false, :base => 3, :target => 4, :operator => "=="}],
@@ -107,7 +107,7 @@ defmodule OptionComparerTest do
           :expect => expect,
           :operator => operator
         } = values
-      ] <- compareSpecifiedOperatorValues do
+      ] <- compare_specified_operator_values do
     @label label
     @expect expect
     @values values
@@ -118,7 +118,7 @@ defmodule OptionComparerTest do
     end
   end
 
-  compareVersion = [
+  compare_version = [
     [:step1, true, {:version, %{:base => "1.2.3", :target => "1.2.3"}}, "eq"],
     [:step2, false, {:version, %{:base => "1.2.3", :target => "1.2.4"}}, "eq"],
     [:step3, true, {:version, %{:base => "1.2.3", :target => "1.2.4"}}, "ne"],
@@ -135,7 +135,7 @@ defmodule OptionComparerTest do
     [:step14, false, {:version, %{:base => "2.3.15", :target => "1.3.4"}}, "le"]
   ]
 
-  for [label, expect, values, operator] <- compareVersion do
+  for [label, expect, values, operator] <- compare_version do
     @label label
     @expect expect
     @values values
