@@ -23,6 +23,11 @@ cover:
 cover_local:
 	MIX_ENV=test mix coveralls.html
 
+dialyzer:
+	MIX_ENV=test mix dialyzer --plt
+	MIX_ENV=test mix dialyzer
+.PHONY: dialyzer
+
 hook:
 	cp scripts/hooks/pre-push .git/hooks/pre-push
 .PHONY: hook

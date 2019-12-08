@@ -1,4 +1,5 @@
 defmodule GverDiff.OptionComparer do
+#  @spec compare?(Types.Compares.t(), nil) :: boolean
   def compare?(%{:base => base, :target => target}, nil) do
     cond do
       get_type(base) === get_type(target) -> base < target
@@ -60,7 +61,7 @@ defmodule GverDiff.OptionComparer do
     cond do
       is_integer(x) -> {:number}
       is_boolean(x) -> {:boolean}
-      is_float({x}) -> {:float}
+      is_float(x) -> {:float}
       is_binary(x) -> {:string}
       true -> {:error}
     end
