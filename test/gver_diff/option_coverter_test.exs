@@ -81,7 +81,10 @@ defmodule OptionConverterTest do
     @values values
     @specified_type specified_type
     test "convert specified type: #{@label}" do
-      actual = GverDiff.OptionConverter.convert(@values, type: @specified_type)
+      actual = GverDiff.OptionConverter.convert(
+        @values,
+        [GverDiffType.new(@specified_type)]
+      )
       assert @expect === actual
     end
   end
@@ -140,7 +143,7 @@ defmodule OptionConverterTest do
       assert_raise(RuntimeError, @message, fn ->
         GverDiff.OptionConverter.convert(
           @values,
-          type: @specified_type
+          [GverDiffType.new(@specified_type)]
         )
       end)
     end
@@ -169,8 +172,10 @@ defmodule OptionConverterTest do
       actual =
         GverDiff.OptionConverter.convert(
           @values,
-          type: @specified_type,
-          regex: @regex
+          [
+            GverDiffType.new(@specified_type),
+            {:regex, @regex}
+          ]
         )
 
       assert @expect === actual
@@ -181,8 +186,10 @@ defmodule OptionConverterTest do
     assert_raise(RuntimeError, "Error!! failed extract regex.", fn ->
       GverDiff.OptionConverter.convert(
         %Compares{:base => "11", :target => "22"},
-        type: "date",
-        regex: "dev-(?<version>.*"
+        [
+          GverDiffType.new("date"),
+          {:regex, "dev-(?<version>.*"}
+        ]
       )
     end)
   end

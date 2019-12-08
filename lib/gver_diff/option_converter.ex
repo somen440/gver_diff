@@ -9,16 +9,16 @@ defmodule GverDiff.OptionConverter do
 
   def convert(
         %{:base => base, :target => target} = values,
-        [{:type, type}]
+        [%GverDiffType{:name => type}]
       ) do
-    cond do
-      type === "string" ->
+    case type do
+      :string ->
         %TypeAndCompares{
           :id => :string,
           :compares => %Compares{:base => base, :target => target}
         }
 
-      type === "integer" ->
+      :integer ->
         %TypeAndCompares{
           :id => :integer,
           :compares => %Compares{
@@ -27,7 +27,7 @@ defmodule GverDiff.OptionConverter do
           }
         }
 
-      type === "float" ->
+      :float ->
         %TypeAndCompares{
           :id => :float,
           :compares => %Compares{
@@ -36,7 +36,7 @@ defmodule GverDiff.OptionConverter do
           }
         }
 
-      type === "datetime" ->
+      :datetime ->
         %TypeAndCompares{
           :id => :datetime,
           :compares => %Compares{
@@ -45,7 +45,7 @@ defmodule GverDiff.OptionConverter do
           }
         }
 
-      type == "date" ->
+      :date ->
         %TypeAndCompares{
           :id => :date,
           :compares => %Compares{
@@ -54,7 +54,7 @@ defmodule GverDiff.OptionConverter do
           }
         }
 
-      type == "version" ->
+      :version ->
         %TypeAndCompares{
           :id => :version,
           :compares => %Compares{
@@ -63,14 +63,14 @@ defmodule GverDiff.OptionConverter do
           }
         }
 
-      true ->
+      _ ->
         raise "Error!! undefined type."
     end
   end
 
   def convert(
         %{:base => base, :target => target},
-        [{:type, type}, {:regex, regex}]
+        [type, {:regex, regex}]
       ) do
     extract_version = fn x ->
       regex
@@ -90,7 +90,7 @@ defmodule GverDiff.OptionConverter do
         :base => extract_version.(base),
         :target => extract_version.(target)
       },
-      type: type
+      [type]
     )
   end
 
