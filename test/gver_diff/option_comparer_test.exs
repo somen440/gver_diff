@@ -4,49 +4,55 @@ defmodule OptionComparerTest do
   compare_integer_values = [
     # default operator <
     # integer
-    [:step1, %{:expect => true, :base => 3, :target => 4}],
-    [:step2, %{:expect => false, :base => 4, :target => 4}],
-    [:step3, %{:expect => false, :base => 5, :target => 4}],
+    [:step1, true, %Compares{:base => 3, :target => 4}],
+    [:step2, false, %Compares{:base => 4, :target => 4}],
+    [:step3, false, %Compares{:base => 5, :target => 4}],
     # sting
-    [:step4, %{:expect => true, :base => "a", :target => "b"}],
-    [:step5, %{:expect => false, :base => "b", :target => "b"}],
-    [:step6, %{:expect => false, :base => "c", :target => "b"}],
+    [:step4, true, %Compares{:base => "a", :target => "b"}],
+    [:step5, false, %Compares{:base => "b", :target => "b"}],
+    [:step6, false, %Compares{:base => "c", :target => "b"}],
     # float
-    [:step7, %{:expect => true, :base => 3.1, :target => 3.11}],
-    [:step8, %{:expect => false, :base => 4.123, :target => 4.123}],
-    [:step9, %{:expect => false, :base => 5.234, :target => 4.222}],
+    [:step7, true, %Compares{:base => 3.1, :target => 3.11}],
+    [:step8, false, %Compares{:base => 4.123, :target => 4.123}],
+    [:step9, false, %Compares{:base => 5.234, :target => 4.222}],
     # datetime
     [
       :step10,
-      %{:expect => true, :base => ~N[2019-11-11 11:11:11], :target => ~N[2019-11-11 22:22:22]}
+      true,
+      %Compares{:base => ~N[2019-11-11 11:11:11], :target => ~N[2019-11-11 22:22:22]}
     ],
     [
       :step11,
-      %{:expect => false, :base => ~N[2019-11-11 11:11:11], :target => ~N[2019-11-11 11:11:11]}
+      false,
+      %Compares{:base => ~N[2019-11-11 11:11:11], :target => ~N[2019-11-11 11:11:11]}
     ],
     [
       :step12,
-      %{:expect => false, :base => ~N[2019-11-11 11:11:11], :target => ~N[2019-11-09 11:11:11]}
+      false,
+      %Compares{:base => ~N[2019-11-11 11:11:11], :target => ~N[2019-11-09 11:11:11]}
     ],
     # different type
-    [:step13, %{:expect => false, :base => 3, :target => "4"}],
-    [:step14, %{:expect => false, :base => 3, :target => 3.11}],
+    [:step13, false, %Compares{:base => 3, :target => "4"}],
+    [:step14, false, %Compares{:base => 3, :target => 3.11}],
     # date
     [
       :step15,
-      %{:expect => true, :base => ~D[2019-11-11], :target => ~D[2019-11-12]}
+      true,
+      %Compares{:base => ~D[2019-11-11], :target => ~D[2019-11-12]}
     ],
     [
       :step16,
-      %{:expect => false, :base => ~D[2019-11-11], :target => ~D[2019-11-11]}
+      false,
+      %Compares{:base => ~D[2019-11-11], :target => ~D[2019-11-11]}
     ],
     [
       :step17,
-      %{:expect => false, :base => ~D[2019-11-11], :target => ~D[2019-11-09]}
+      false,
+      %Compares{:base => ~D[2019-11-11], :target => ~D[2019-11-09]}
     ]
   ]
 
-  for [label, %{:expect => expect} = values] <- compare_integer_values do
+  for [label, expect, values] <- compare_integer_values do
     @label label
     @expect expect
     @values values
@@ -58,56 +64,51 @@ defmodule OptionComparerTest do
 
   compare_specified_operator_values = [
     # equals
-    [:step1, %{:expect => true, :base => 4, :target => 4, :operator => "=="}],
-    [:step2, %{:expect => false, :base => 3, :target => 4, :operator => "=="}],
-    [:step3, %{:expect => false, :base => "4", :target => 4, :operator => "=="}],
-    [:step4, %{:expect => true, :base => 4, :target => 4, :operator => "eq"}],
-    [:step5, %{:expect => false, :base => 3, :target => 4, :operator => "eq"}],
-    [:step6, %{:expect => false, :base => "4", :target => 4, :operator => "eq"}],
+    [:step1, true, %Compares{:base => 4, :target => 4}, "=="],
+    [:step2, false, %Compares{:base => 3, :target => 4}, "=="],
+    [:step3, false, %Compares{:base => "4", :target => 4}, "=="],
+    [:step4, true, %Compares{:base => 4, :target => 4}, "eq"],
+    [:step5, false, %Compares{:base => 3, :target => 4}, "eq"],
+    [:step6, false, %Compares{:base => "4", :target => 4}, "eq"],
     # not equal
-    [:step7, %{:expect => true, :base => 2, :target => 4, :operator => "!="}],
-    [:step8, %{:expect => false, :base => 4, :target => 4, :operator => "!="}],
-    [:step10, %{:expect => true, :base => 2, :target => 4, :operator => "<>"}],
-    [:step11, %{:expect => false, :base => 4, :target => 4, :operator => "<>"}],
-    [:step13, %{:expect => true, :base => 2, :target => 4, :operator => "ne"}],
-    [:step14, %{:expect => false, :base => 4, :target => 4, :operator => "ne"}],
+    [:step7, true, %Compares{:base => 2, :target => 4}, "!="],
+    [:step8, false, %Compares{:base => 4, :target => 4}, "!="],
+    [:step10, true, %Compares{:base => 2, :target => 4}, "<>"],
+    [:step11, false, %Compares{:base => 4, :target => 4}, "<>"],
+    [:step13, true, %Compares{:base => 2, :target => 4}, "ne"],
+    [:step14, false, %Compares{:base => 4, :target => 4}, "ne"],
     # greater than
-    [:step16, %{:expect => true, :base => 5, :target => 4, :operator => ">"}],
-    [:step17, %{:expect => false, :base => 4, :target => 4, :operator => ">"}],
-    [:step18, %{:expect => false, :base => 3, :target => 4, :operator => ">"}],
-    [:step19, %{:expect => true, :base => 5, :target => 4, :operator => "gt"}],
-    [:step20, %{:expect => false, :base => 4, :target => 4, :operator => "gt"}],
-    [:step21, %{:expect => false, :base => 3, :target => 4, :operator => "gt"}],
+    [:step16, true, %Compares{:base => 5, :target => 4}, ">"],
+    [:step17, false, %Compares{:base => 4, :target => 4}, ">"],
+    [:step18, false, %Compares{:base => 3, :target => 4}, ">"],
+    [:step19, true, %Compares{:base => 5, :target => 4}, "gt"],
+    [:step20, false, %Compares{:base => 4, :target => 4}, "gt"],
+    [:step21, false, %Compares{:base => 3, :target => 4}, "gt"],
     # less than
-    [:step22, %{:expect => true, :base => 3, :target => 4, :operator => "<"}],
-    [:step23, %{:expect => false, :base => 4, :target => 4, :operator => "<"}],
-    [:step24, %{:expect => false, :base => 5, :target => 4, :operator => "<"}],
-    [:step25, %{:expect => true, :base => 3, :target => 4, :operator => "lt"}],
-    [:step26, %{:expect => false, :base => 4, :target => 4, :operator => "lt"}],
-    [:step27, %{:expect => false, :base => 5, :target => 4, :operator => "lt"}],
+    [:step22, true, %Compares{:base => 3, :target => 4}, "<"],
+    [:step23, false, %Compares{:base => 4, :target => 4}, "<"],
+    [:step24, false, %Compares{:base => 5, :target => 4}, "<"],
+    [:step25, true, %Compares{:base => 3, :target => 4}, "lt"],
+    [:step26, false, %Compares{:base => 4, :target => 4}, "lt"],
+    [:step27, false, %Compares{:base => 5, :target => 4}, "lt"],
     # greater than or equal
-    [:step28, %{:expect => true, :base => 5, :target => 4, :operator => ">="}],
-    [:step29, %{:expect => true, :base => 4, :target => 4, :operator => ">="}],
-    [:step31, %{:expect => false, :base => 3, :target => 4, :operator => ">="}],
-    [:step32, %{:expect => true, :base => 5, :target => 4, :operator => "ge"}],
-    [:step33, %{:expect => true, :base => 4, :target => 4, :operator => "ge"}],
-    [:step34, %{:expect => false, :base => 3, :target => 4, :operator => "ge"}],
+    [:step28, true, %Compares{:base => 5, :target => 4}, ">="],
+    [:step29, true, %Compares{:base => 4, :target => 4}, ">="],
+    [:step31, false, %Compares{:base => 3, :target => 4}, ">="],
+    [:step32, true, %Compares{:base => 5, :target => 4}, "ge"],
+    [:step33, true, %Compares{:base => 4, :target => 4}, "ge"],
+    [:step34, false, %Compares{:base => 3, :target => 4}, "ge"],
     # less than or equal
-    [:step35, %{:expect => true, :base => 5, :target => 6, :operator => "<="}],
-    [:step36, %{:expect => true, :base => 4, :target => 4, :operator => "<="}],
-    [:step37, %{:expect => false, :base => 3, :target => 1, :operator => "<="}],
-    [:step38, %{:expect => true, :base => 5, :target => 6, :operator => "le"}],
-    [:step39, %{:expect => true, :base => 4, :target => 4, :operator => "le"}],
-    [:step40, %{:expect => false, :base => 3, :target => 1, :operator => "le"}]
+    [:step35, true, %Compares{:base => 5, :target => 6}, "<="],
+    [:step36, true, %Compares{:base => 4, :target => 4}, "<="],
+    [:step37, false, %Compares{:base => 3, :target => 1}, "<="],
+    [:step38, true, %Compares{:base => 5, :target => 6}, "le"],
+    [:step39, true, %Compares{:base => 4, :target => 4}, "le"],
+    [:step40, false, %Compares{:base => 3, :target => 1}, "le"]
   ]
 
-  for [
-        label,
-        %{
-          :expect => expect,
-          :operator => operator
-        } = values
-      ] <- compare_specified_operator_values do
+  for [label, expect, values, operator] <-
+        compare_specified_operator_values do
     @label label
     @expect expect
     @values values
@@ -119,20 +120,132 @@ defmodule OptionComparerTest do
   end
 
   compare_version = [
-    [:step1, true, {:version, %{:base => "1.2.3", :target => "1.2.3"}}, "eq"],
-    [:step2, false, {:version, %{:base => "1.2.3", :target => "1.2.4"}}, "eq"],
-    [:step3, true, {:version, %{:base => "1.2.3", :target => "1.2.4"}}, "ne"],
-    [:step4, false, {:version, %{:base => "1.2.4", :target => "1.2.4"}}, "ne"],
-    [:step5, true, {:version, %{:base => "1.2.15", :target => "1.2.4"}}, "gt"],
-    [:step6, false, {:version, %{:base => "1.2.15", :target => "1.3.4"}}, "gt"],
-    [:step7, true, {:version, %{:base => "1.1.15", :target => "1.2.4"}}, "lt"],
-    [:step8, false, {:version, %{:base => "2.3.15", :target => "1.3.4"}}, "lt"],
-    [:step9, true, {:version, %{:base => "1.2.4", :target => "1.2.4"}}, "ge"],
-    [:step10, true, {:version, %{:base => "2.3.15", :target => "1.3.4"}}, "ge"],
-    [:step11, false, {:version, %{:base => "0.3.15", :target => "1.3.4"}}, "ge"],
-    [:step12, true, {:version, %{:base => "1.2.4", :target => "1.2.4"}}, "le"],
-    [:step13, true, {:version, %{:base => "0.3.15", :target => "1.3.4"}}, "le"],
-    [:step14, false, {:version, %{:base => "2.3.15", :target => "1.3.4"}}, "le"]
+    [
+      :step1,
+      true,
+      %TypeAndCompares{
+        :id => :version,
+        :compares => %Compares{:base => "1.2.3", :target => "1.2.3"}
+      },
+      "eq"
+    ],
+    [
+      :step2,
+      false,
+      %TypeAndCompares{
+        :id => :version,
+        :compares => %Compares{:base => "1.2.3", :target => "1.2.4"}
+      },
+      "eq"
+    ],
+    [
+      :step3,
+      true,
+      %TypeAndCompares{
+        :id => :version,
+        :compares => %Compares{:base => "1.2.3", :target => "1.2.4"}
+      },
+      "ne"
+    ],
+    [
+      :step4,
+      false,
+      %TypeAndCompares{
+        :id => :version,
+        :compares => %Compares{:base => "1.2.4", :target => "1.2.4"}
+      },
+      "ne"
+    ],
+    [
+      :step5,
+      true,
+      %TypeAndCompares{
+        :id => :version,
+        :compares => %Compares{:base => "1.2.15", :target => "1.2.4"}
+      },
+      "gt"
+    ],
+    [
+      :step6,
+      false,
+      %TypeAndCompares{
+        :id => :version,
+        :compares => %Compares{:base => "1.2.15", :target => "1.3.4"}
+      },
+      "gt"
+    ],
+    [
+      :step7,
+      true,
+      %TypeAndCompares{
+        :id => :version,
+        :compares => %Compares{:base => "1.1.15", :target => "1.2.4"}
+      },
+      "lt"
+    ],
+    [
+      :step8,
+      false,
+      %TypeAndCompares{
+        :id => :version,
+        :compares => %Compares{:base => "2.3.15", :target => "1.3.4"}
+      },
+      "lt"
+    ],
+    [
+      :step9,
+      true,
+      %TypeAndCompares{
+        :id => :version,
+        :compares => %Compares{:base => "1.2.4", :target => "1.2.4"}
+      },
+      "ge"
+    ],
+    [
+      :step10,
+      true,
+      %TypeAndCompares{
+        :id => :version,
+        :compares => %Compares{:base => "2.3.15", :target => "1.3.4"}
+      },
+      "ge"
+    ],
+    [
+      :step11,
+      false,
+      %TypeAndCompares{
+        :id => :version,
+        :compares => %Compares{:base => "0.3.15", :target => "1.3.4"}
+      },
+      "ge"
+    ],
+    [
+      :step12,
+      true,
+      %TypeAndCompares{
+        :id => :version,
+        :compares => %Compares{:base => "1.2.4", :target => "1.2.4"}
+      },
+      "le"
+    ],
+    [
+      :step13,
+      true,
+      %TypeAndCompares{
+        :id => :version,
+        :compares => %Compares{:base => "0.3.15", :target => "1.3.4"}
+      },
+      "le"
+    ],
+    [
+      :step14,
+      false,
+      %TypeAndCompares{
+        :id => :version,
+        :compares => %Compares{:base => "2.3.15", :target => "1.3.4"}
+      },
+      "le"
+    ]
   ]
 
   for [label, expect, values, operator] <- compare_version do

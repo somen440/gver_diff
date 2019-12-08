@@ -15,8 +15,18 @@ defmodule GverDiff.CLI do
 
     [base, operator, target] = arg
 
-    %{:base => base, :target => target}
-    |> GverDiff.OptionConverter.convert(options)
+    option =
+      options
+      |> Enum.map(fn {k, v} ->
+        if k == :type do
+          GverDiffType.new(v)
+        else
+          {:k, v}
+        end
+      end)
+
+    %Compares{:base => base, :target => target}
+    |> GverDiff.OptionConverter.convert(option)
     |> GverDiff.OptionComparer.compare?(operator)
     |> IO.puts()
   end
