@@ -9,7 +9,6 @@ jobs:
       - restore_cache:
           key: deps-cache-{{ checksum "mix.lock" }}
       - run: make build
-      - run: make dialyzer_plt
       - save_cache:
           key: deps-cache-{{ checksum "mix.lock" }}
           paths:
@@ -66,6 +65,14 @@ jobs:
       - checkout
       - restore_cache:
           key: deps-cache-{{ checksum "mix.lock" }}
+      - restore_cache:
+          key: plt-cache-{{ checksum "mix.lock" }}
+      - run: make dialyzer_plt
+      - save_cache:
+          key: plt-cache-{{ checksum "mix.lock" }}
+          paths:
+            - ~/.mix
+            - _build
       - run: make dialyzer
 
 workflows:
