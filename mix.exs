@@ -25,7 +25,8 @@ defmodule GverDiff.Mixfile do
   defp deps do
     [
       {:excoveralls, "~> 0.10", only: :test},
-      {:dialyxir, "~> 0.4", only: [:test]}
+      {:dialyxir, "~> 0.4", only: [:test]},
+      {:ex_doc, "~> 0.10", only: :dev}
     ]
   end
 
