@@ -5,3 +5,4 @@ deps/
 cover/excoveralls.html
 cover/excoveralls.json
 doc/
+gver_diff
