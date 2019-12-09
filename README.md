@@ -2,7 +2,7 @@
 
 ## LINK
 
-- [Docker Hub gver_diff](https://hub.docker.com/repository/docker/mentol310/gver_diff)
+- [Docker Hub gver_diff](https://hub.docker.com/r/mentol310/gver_diff)
 - [Hex gver_diff](https://hex.pm/packages/gver_diff)
 
 ## Usage
