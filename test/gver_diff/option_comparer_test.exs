@@ -104,7 +104,249 @@ defmodule OptionComparerTest do
     [:step37, false, %Compares{:base => 3, :target => 1}, "<="],
     [:step38, true, %Compares{:base => 5, :target => 6}, "le"],
     [:step39, true, %Compares{:base => 4, :target => 4}, "le"],
-    [:step40, false, %Compares{:base => 3, :target => 1}, "le"]
+    [:step40, false, %Compares{:base => 3, :target => 1}, "le"],
+    # date
+    [
+      :step41,
+      true,
+      %TypeAndCompares{
+        :id => :date,
+        :compares => %Compares{:base => ~D[2019-10-11], :target => ~D[2020-10-11]}
+      },
+      "<"
+    ],
+    [
+      :step42,
+      true,
+      %TypeAndCompares{
+        :id => :date,
+        :compares => %Compares{:base => ~D[2019-10-11], :target => ~D[2019-11-11]}
+      },
+      "<"
+    ],
+    [
+      :step43,
+      true,
+      %TypeAndCompares{
+        :id => :date,
+        :compares => %Compares{:base => ~D[2019-10-11], :target => ~D[2019-10-12]}
+      },
+      "<"
+    ],
+    [
+      :step44,
+      true,
+      %TypeAndCompares{
+        :id => :date,
+        :compares => %Compares{:base => ~D[2019-10-11], :target => ~D[2019-10-12]}
+      },
+      "<"
+    ],
+    [
+      :step45,
+      false,
+      %TypeAndCompares{
+        :id => :date,
+        :compares => %Compares{:base => ~D[2020-10-11], :target => ~D[2019-10-12]}
+      },
+      "<"
+    ],
+    [
+      :step46,
+      false,
+      %TypeAndCompares{
+        :id => :date,
+        :compares => %Compares{:base => ~D[2020-10-11], :target => ~D[2019-10-12]}
+      },
+      "eq"
+    ],
+    [
+      :step47,
+      true,
+      %TypeAndCompares{
+        :id => :date,
+        :compares => %Compares{:base => ~D[2020-10-11], :target => ~D[2020-10-11]}
+      },
+      "eq"
+    ],
+    [
+      :step48,
+      false,
+      %TypeAndCompares{
+        :id => :date,
+        :compares => %Compares{:base => ~D[2020-10-11], :target => ~D[2020-10-11]}
+      },
+      "<>"
+    ],
+    [
+      :step49,
+      true,
+      %TypeAndCompares{
+        :id => :date,
+        :compares => %Compares{:base => ~D[2020-10-11], :target => ~D[2020-11-11]}
+      },
+      "<>"
+    ],
+    [
+      :step50,
+      false,
+      %TypeAndCompares{
+        :id => :date,
+        :compares => %Compares{:base => ~D[2020-10-11], :target => ~D[2020-11-11]}
+      },
+      ">"
+    ],
+    [
+      :step51,
+      true,
+      %TypeAndCompares{
+        :id => :date,
+        :compares => %Compares{:base => ~D[2020-10-11], :target => ~D[2020-09-11]}
+      },
+      ">"
+    ],
+    [
+      :step52,
+      true,
+      %TypeAndCompares{
+        :id => :date,
+        :compares => %Compares{:base => ~D[2020-10-11], :target => ~D[2020-09-11]}
+      },
+      ">="
+    ],
+    [
+      :step53,
+      true,
+      %TypeAndCompares{
+        :id => :date,
+        :compares => %Compares{:base => ~D[2020-10-11], :target => ~D[2020-10-11]}
+      },
+      ">="
+    ],
+    [
+      :step54,
+      true,
+      %TypeAndCompares{
+        :id => :date,
+        :compares => %Compares{:base => ~D[2020-10-11], :target => ~D[2021-10-11]}
+      },
+      "<="
+    ],
+    [
+      :step55,
+      true,
+      %TypeAndCompares{
+        :id => :date,
+        :compares => %Compares{:base => ~D[2020-10-11], :target => ~D[2020-10-11]}
+      },
+      "<="
+    ],
+    [
+      :step56,
+      false,
+      %TypeAndCompares{
+        :id => :date,
+        :compares => %Compares{:base => ~D[2020-10-11], :target => ~D[2019-10-11]}
+      },
+      "<="
+    ],
+    # datetime
+    [
+      :step57,
+      true,
+      %TypeAndCompares{
+        :id => :datetime,
+        :compares => %Compares{
+          :base => ~N[2019-11-28 14:59:08],
+          :target => ~N[2019-12-07 15:40:59]
+        }
+      },
+      "<="
+    ],
+    [
+      :step58,
+      true,
+      %TypeAndCompares{
+        :id => :datetime,
+        :compares => %Compares{
+          :base => ~N[2019-11-28 14:59:08],
+          :target => ~N[2019-12-07 15:40:59]
+        }
+      },
+      "<"
+    ],
+    [
+      :step59,
+      true,
+      %TypeAndCompares{
+        :id => :datetime,
+        :compares => %Compares{
+          :base => ~N[2019-11-28 14:59:08],
+          :target => ~N[2019-12-07 15:40:59]
+        }
+      },
+      "!="
+    ],
+    [
+      :step60,
+      false,
+      %TypeAndCompares{
+        :id => :datetime,
+        :compares => %Compares{
+          :base => ~N[2019-11-28 14:59:08],
+          :target => ~N[2019-12-07 15:40:59]
+        }
+      },
+      ">="
+    ],
+    [
+      :step61,
+      false,
+      %TypeAndCompares{
+        :id => :datetime,
+        :compares => %Compares{
+          :base => ~N[2019-11-28 14:59:08],
+          :target => ~N[2019-12-07 15:40:59]
+        }
+      },
+      ">"
+    ],
+    [
+      :step62,
+      false,
+      %TypeAndCompares{
+        :id => :datetime,
+        :compares => %Compares{
+          :base => ~N[2019-11-28 14:59:08],
+          :target => ~N[2019-12-07 15:40:59]
+        }
+      },
+      "=="
+    ],
+    [
+      :step63,
+      true,
+      %TypeAndCompares{
+        :id => :datetime,
+        :compares => %Compares{
+          :base => ~N[2019-12-07 15:40:59],
+          :target => ~N[2019-12-07 15:40:59]
+        }
+      },
+      "=="
+    ],
+    [
+      :step64,
+      true,
+      %TypeAndCompares{
+        :id => :datetime,
+        :compares => %Compares{
+          :base => ~N[2019-12-07 15:41:59],
+          :target => ~N[2019-12-07 15:40:59]
+        }
+      },
+      ">"
+    ]
   ]
 
   for [label, expect, values, operator] <-
