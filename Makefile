@@ -32,8 +32,3 @@ dialyzer:
 
 hook:
 	cp scripts/hooks/pre-push .git/hooks/pre-push
-.PHONY: hook
-
-deploy: build
-	mix hex.publish
-	docker build -t mentol310/gver_diff
