@@ -1,4 +1,9 @@
-# GverDiff [![CircleCI](https://circleci.com/gh/somen440/gver_diff.svg?style=shield)](https://circleci.com/gh/somen440/gver_diff) [![Coverage Status](https://coveralls.io/repos/github/somen440/gver_diff/badge.svg)](https://coveralls.io/github/somen440/gver_diff)
+# GverDiff [![CircleCI](https://circleci.com/gh/somen440/gver_diff.svg?style=shield)](https://circleci.com/gh/somen440/gver_diff) [![Coverage Status](https://coveralls.io/repos/github/somen440/gver_diff/badge.svg)](https://coveralls.io/github/somen440/gver_diff) [![hex.pm version](https://img.shields.io/hexpm/v/gver_diff.svg)](https://hex.pm/packages/gver_diff) [![hex.pm](https://img.shields.io/hexpm/l/gver_diff.svg)](https://github.com/somen440/gver_diff/blob/master/LICENSE)
+
+## LINK
+
+- [Docker Hub gver_diff](https://hub.docker.com/repository/docker/mentol310/gver_diff)
+- [Hex gver_diff](https://hex.pm/packages/gver_diff)
 
 ## Usage
 
